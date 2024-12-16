@@ -81,7 +81,7 @@ const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
     return next(new Error('Cant display init data as long as it was not found'));
   }
 
-  new UserController().create(initData.user).then(e => {console.log('res', e)}).finally(() => {
+  new UserController().create(initData.user, {date: initData.authDate}).then(e => {console.log('res', e)}).finally(() => {
 
     console.log('initData', initData);
   

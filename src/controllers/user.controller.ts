@@ -10,8 +10,8 @@ export default class UserController extends Controller<IUsersSchema>{
         return Object(result)
     }
 
-    public async create(request: IUsersSchema) {
-        const result = await new Users({id: request.id, firstName: request.firstName, username: request.username }).save(); 
+    public async create(request: IUsersSchema, params: {date: Date}) {
+        const result = await Users.findOneAndUpdate({ id: request.id }, {id: request.id, firstName: request.firstName, username: request.username, authDate: params.date }, { new: true, upsert: true }); 
         
         return Promise.resolve(result)
     }
