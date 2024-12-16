@@ -4,7 +4,6 @@ import { db_connect } from "@/db/db_connect";
 import apiRouter from "@/router";
 import Test from "@/db/models/test.model";
 import { log } from "console";
-import RunTelegramBot from "@/bot";
 import { validate, parse } from '@telegram-apps/init-data-node';
 
 dotenv.config();
@@ -99,16 +98,14 @@ const port = process.env.PORT || 3000;
 
 db_connect().then((e) => {log('success connect DB')} ).catch(err => {log(err)})
 
-RunTelegramBot()
-
 app.use(express.json());
 app.use('/api', apiRouter);
-// app.use(authMiddleware);
-// app.get('/', showInitDataMiddleware);
-// app.post('/', (req, res) => {
-//   log('post ')
-// })
-// app.use(defaultErrorMiddleware);
+app.use(authMiddleware);
+app.get('/', showInitDataMiddleware);
+app.post('/', (req, res) => {
+  log('post ')
+})
+app.use(defaultErrorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Express Typescript on Vercel')

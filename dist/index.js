@@ -18,7 +18,6 @@ const db_connect_1 = require("./db/db_connect");
 const router_1 = __importDefault(require("./router"));
 const test_model_1 = __importDefault(require("./db/models/test.model"));
 const console_1 = require("console");
-const bot_1 = __importDefault(require("./bot"));
 const init_data_node_1 = require("@telegram-apps/init-data-node");
 dotenv_1.default.config();
 // Your secret bot token.
@@ -100,15 +99,14 @@ const defaultErrorMiddleware = (err, _req, res) => {
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 (0, db_connect_1.db_connect)().then((e) => { (0, console_1.log)('success connect DB'); }).catch(err => { (0, console_1.log)(err); });
-(0, bot_1.default)();
 app.use(express_1.default.json());
 app.use('/api', router_1.default);
-// app.use(authMiddleware);
-// app.get('/', showInitDataMiddleware);
-// app.post('/', (req, res) => {
-//   log('post ')
-// })
-// app.use(defaultErrorMiddleware);
+app.use(authMiddleware);
+app.get('/', showInitDataMiddleware);
+app.post('/', (req, res) => {
+    (0, console_1.log)('post ');
+});
+app.use(defaultErrorMiddleware);
 app.get('/', (req, res) => {
     res.send('Express Typescript on Vercel');
 });
