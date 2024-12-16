@@ -4,6 +4,7 @@ import { db_connect } from "@/db/db_connect";
 import apiRouter from "@/router";
 import Test from "@/db/models/test.model";
 import { log } from "console";
+import cors from 'cors';
 // import { validate, parse } from '@telegram-apps/init-data-node';
 
 dotenv.config();
@@ -98,6 +99,9 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 
 db_connect().then((e) => {log('success connect DB')} ).catch(err => {log(err)})
+
+// Enable CORS
+app.use(cors());
 
 app.use(express.json());
 app.use('/api', apiRouter);
