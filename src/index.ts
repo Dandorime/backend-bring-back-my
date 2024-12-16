@@ -6,6 +6,7 @@ import Test from "@/db/models/test.model";
 import { log } from "console";
 import cors from 'cors';
 import { validate, parse } from '@telegram-apps/init-data-node';
+import UserController from "./controllers/user.controller";
 
 dotenv.config();
 
@@ -73,13 +74,19 @@ const authMiddleware: RequestHandler = (req, res, next) => {
  * @param next - function to call the next middleware.
  */
 const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
+  console.log('showInitDataMiddleware');
+  
   const initData = getInitData(res);
   if (!initData) {
     return next(new Error('Cant display init data as long as it was not found'));
   }
-  console.log(initData);
+
+  new UserController().create(initData.user).then(e => {console.log('res', e)}).finally(() => {
+
+    console.log('initData', initData);
   
-  res.json(initData);
+    res.json(initData);
+  })
 };
 
 /**
@@ -110,7 +117,7 @@ app.post('/', showInitDataMiddleware);
 // app.post('/', (req, res) => {
 //   log('post ')
 // })
-// app.use(defaultErrorMiddleware);
+app.use(defaultErrorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Express Typescript on Vercel')

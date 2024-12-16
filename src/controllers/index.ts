@@ -1,15 +1,15 @@
-interface IController {
-    index: () => any,
-    find: <N>(arg: N) => any,
-    create: <T, N = undefined> (arg: N) => T,
-    update: <T, N = undefined> (arg: N) => T,
-    delete: <T, N = undefined> (arg: N) => T
+interface IController<N> {
+    index: () => Object,
+    find: (arg: N | any) => Object,
+    create: (arg: N | any) => Object,
+    update: (arg: N | any) => Object,
+    delete: (arg: N | any) => String
 }
 
-export default class Controller implements IController {
-    public index(): any {}
-    public find<N>(arg: N): any {}
-    public create<T, N>(arg: N): T  | any {}
-    public update<T, N>(arg: N): T | any {}
-    public delete<T, N>(arg: N): T | any {}
+export default abstract class Controller<N> implements IController<N> {
+    public abstract index(): Object
+    public abstract find(arg: N | any): Object 
+    public abstract create(arg: N | any): Object
+    public abstract update(arg: N | any): Object
+    public abstract delete(arg: N | any): String
 }
