@@ -83,17 +83,17 @@ const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
   res.json(initData);
 };
 
-/**
- * Middleware which displays the user init data.
- * @param err - handled error.
- * @param _req
- * @param res - Response object.
- */
-const defaultErrorMiddleware: ErrorRequestHandler = (err, _req, res) => {
-  res.status(500).json({
-    error: err.message,
-  });
-};
+// /**
+//  * Middleware which displays the user init data.
+//  * @param err - handled error.
+//  * @param _req
+//  * @param res - Response object.
+//  */
+// const defaultErrorMiddleware: ErrorRequestHandler = (err, _req, res) => {
+//   res.status(500).json({
+//     error: err.message,
+//   });
+// };
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -111,7 +111,7 @@ app.post('/', showInitDataMiddleware);
 // app.post('/', (req, res) => {
 //   log('post ')
 // })
-app.use(defaultErrorMiddleware);
+// app.use(defaultErrorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Express Typescript on Vercel')
