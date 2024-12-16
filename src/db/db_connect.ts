@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-async function main() {
-    await mongoose.connect(process.env.DB_MONGO_KEY || '')
+async function db_connect() {
+    await mongoose.connect(process.env.DB_MONGO_KEY + 'bring-back-my-claster' || '')
 }
 
-export {main}
+export {db_connect}
