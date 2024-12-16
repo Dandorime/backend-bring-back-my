@@ -101,12 +101,13 @@ db_connect().then((e) => {log('success connect DB')} ).catch(err => {log(err)})
 
 app.use(express.json());
 app.use('/api', apiRouter);
-app.use(authMiddleware);
-app.get('/', showInitDataMiddleware);
+// app.use(authMiddleware);
+// app.get('/', showInitDataMiddleware);
+
 app.post('/', (req, res) => {
   log('post ')
 })
-app.use(defaultErrorMiddleware);
+// app.use(defaultErrorMiddleware);
 
 app.get('/', (req, res) => {
   res.send('Express Typescript on Vercel')
