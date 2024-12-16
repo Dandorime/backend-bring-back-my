@@ -4,7 +4,7 @@ import { db_connect } from "@/db/db_connect";
 import apiRouter from "@/router";
 import Test from "@/db/models/test.model";
 import { log } from "console";
-import { validate, parse } from '@telegram-apps/init-data-node';
+// import { validate, parse } from '@telegram-apps/init-data-node';
 
 dotenv.config();
 
@@ -44,25 +44,26 @@ const authMiddleware: RequestHandler = (req, res, next) => {
   const [authType, authData = ''] = (req.header('authorization') || '').split(' ');
   console.log(authData);
 
-  switch (authType) {
-    case 'tma':
-      try {
-        // Validate init data.
-        validate(authData, token as string, {
-          // We consider init data sign valid for 1 hour from their creation moment.
-          expiresIn: 3600,
-        });
+  // switch (authType) {
+  //   case 'tma':
+  //     try {
+  //       // Validate init data.
+  //       validate(authData, token as string, {
+  //         // We consider init data sign valid for 1 hour from their creation moment.
+  //         expiresIn: 3600,
+  //       });
 
-        // Parse init data. We will surely need it in the future.
-        setInitData(res, parse(authData));
-        return next();
-      } catch (e) {
-        return next(e);
-      }
-    // ... other authorization methods.
-    default:
-      return next(new Error('Unauthorized'));
-  }
+  //       // Parse init data. We will surely need it in the future.
+  //       setInitData(res, parse(authData));
+  //       return next();
+  //     } catch (e) {
+  //       return next(e);
+  //     }
+  //   // ... other authorization methods.
+  //   default:
+  //     return next(new Error('Unauthorized'));
+  // }
+  return next();
 };
 
 /**
