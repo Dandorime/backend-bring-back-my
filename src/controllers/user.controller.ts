@@ -11,7 +11,7 @@ export default class UserController extends Controller<IUsersSchema>{
     }
 
     public async create(request: IUsersSchema) {
-        const result = await new Users({id: request.id, first_name: request.first_name, username: request.username }).save(); 
+        const result = await new Users({id: request.id, firstName: request.firstName, username: request.username }).save(); 
         
         return Promise.resolve(result)
     }
