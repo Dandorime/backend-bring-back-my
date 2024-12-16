@@ -5,7 +5,7 @@ import apiRouter from "@/router";
 import Test from "@/db/models/test.model";
 import { log } from "console";
 import cors from 'cors';
-// import { validate, parse } from '@telegram-apps/init-data-node';
+import { validate, parse } from '@telegram-apps/init-data-node';
 
 dotenv.config();
 
@@ -45,34 +45,33 @@ const authMiddleware: RequestHandler = (req, res, next) => {
   const [authType, authData = ''] = (req.header('authorization') || '').split(' ');
   console.log(authData);
 
-  // switch (authType) {
-  //   case 'tma':
-  //     try {
-  //       // Validate init data.
-  //       validate(authData, token as string, {
-  //         // We consider init data sign valid for 1 hour from their creation moment.
-  //         expiresIn: 3600,
-  //       });
+  switch (authType) {
+    case 'tma':
+      try {
+        // Validate init data.
+        validate(authData, token as string, {
+          // We consider init data sign valid for 1 hour from their creation moment.
+          expiresIn: 3600,
+        });
 
-  //       // Parse init data. We will surely need it in the future.
-  //       setInitData(res, parse(authData));
-  //       return next();
-  //     } catch (e) {
-  //       return next(e);
-  //     }
-  //   // ... other authorization methods.
-  //   default:
-  //     return next(new Error('Unauthorized'));
-  // }
-  return next();
+        // Parse init data. We will surely need it in the future.
+        setInitData(res, parse(authData));
+        return next();
+      } catch (e) {
+        return next(e);
+      }
+    // ... other authorization methods.
+    default:
+      return next(new Error('Unauthorized'));
+  }
 };
 
-// /**
-//  * Middleware which shows the user init data.
-//  * @param _req
-//  * @param res - Response object.
-//  * @param next - function to call the next middleware.
-//  */
+/**
+ * Middleware which shows the user init data.
+ * @param _req
+ * @param res - Response object.
+ * @param next - function to call the next middleware.
+ */
 const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
   const initData = getInitData(res);
   if (!initData) {
@@ -83,17 +82,17 @@ const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
   res.json(initData);
 };
 
-// /**
-//  * Middleware which displays the user init data.
-//  * @param err - handled error.
-//  * @param _req
-//  * @param res - Response object.
-//  */
-// const defaultErrorMiddleware: ErrorRequestHandler = (err, _req, res) => {
-//   res.status(500).json({
-//     error: err.message,
-//   });
-// };
+/**
+ * Middleware which displays the user init data.
+ * @param err - handled error.
+ * @param _req
+ * @param res - Response object.
+ */
+const defaultErrorMiddleware: ErrorRequestHandler = (err, _req, res) => {
+  res.status(500).json({
+    error: err.message,
+  });
+};
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
