@@ -118,10 +118,11 @@ app.post('/', showInitDataMiddleware);
 // app.use(defaultErrorMiddleware);
 // 
 
-app.get('/calendar', async (req, res) => {
-  const result =  await new CalendarController().index()
-  log('calendar' ,result)
-  res.json(result)
+app.get('/calendar', (req, res) => {
+  new CalendarController().index().then(data => {
+    log('calendar' ,data)
+    res.json(data)
+  })
 })
 
 
