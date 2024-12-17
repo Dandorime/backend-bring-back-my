@@ -120,7 +120,7 @@ app.post('/', showInitDataMiddleware);
 
 app.get('/calendar', (req, res) => {
   new CalendarController().index().then(data => {
-    log('calendar' ,data)
+    log('calendar', data)
     res.json(data)
   })
 })
