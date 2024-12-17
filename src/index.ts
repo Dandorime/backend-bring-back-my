@@ -8,6 +8,7 @@ import cors from 'cors';
 import { validate, parse } from '@telegram-apps/init-data-node';
 import UserController from "./controllers/user.controller";
 import CalendarController from "./controllers/caledar.controller";
+import TaskController from "./controllers/task.controller";
 
 dotenv.config();
 
@@ -121,6 +122,20 @@ app.post('/', showInitDataMiddleware);
 app.get('/calendar', (req, res) => {
   new CalendarController().index().then(data => {
     log('calendar', data)
+    res.json(data)
+  })
+})
+
+app.get('/tasks', (req, res) => {
+  new TaskController().index().then(data => {
+    log('tasks', data)
+    res.json(data)
+  })
+})
+
+app.get('/promos', (req, res) => {
+  new TaskController().index().then(data => {
+    log('promos', data)
     res.json(data)
   })
 })
