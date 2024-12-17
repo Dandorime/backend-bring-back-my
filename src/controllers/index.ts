@@ -1,5 +1,5 @@
 interface IController<N> {
-    index: () => Object,
+    index: () => Promise<any>,
     find: (arg: N | any) => Object,
     create: (arg: N | any, params?: any) => Object,
     update: (arg: N | any) => Object,
@@ -7,7 +7,7 @@ interface IController<N> {
 }
 
 export default abstract class Controller<N> implements IController<N> {
-    public abstract index(): Object
+    public abstract index(): Promise<any>
     public abstract find(arg: N | any): Object 
     public abstract create(arg: N | any, params?: any): Object
     public abstract update(arg: N | any): Object

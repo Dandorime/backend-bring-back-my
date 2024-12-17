@@ -7,6 +7,7 @@ import { log } from "console";
 import cors from 'cors';
 import { validate, parse } from '@telegram-apps/init-data-node';
 import UserController from "./controllers/user.controller";
+import CalendarController from "./controllers/caledar.controller";
 
 dotenv.config();
 
@@ -118,6 +119,17 @@ app.post('/', showInitDataMiddleware);
 //   log('post ')
 // })
 app.use(defaultErrorMiddleware);
+
+app.get('/calendar', (req, res) => {
+  new CalendarController().index().then(data => {
+    res.json(data)
+  }).catch(e => {
+    res.status(500).json({
+    error: e.message,
+  });
+  })
+})
+
 
 app.get('/', (req, res) => {
   res.send('Express Typescript on Vercel')

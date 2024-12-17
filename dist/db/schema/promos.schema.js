@@ -4,14 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const UsersSchema = new mongoose_1.default.Schema({
+const PromosSchema = new mongoose_1.default.Schema({
     id: Number,
-    firstName: String,
-    username: String,
-    authDate: Date,
-    missed_days: {
-        type: Number,
-        default: 0
-    }
+    title: String,
+    description: String,
+    photo: String,
+    price: Number
 });
-exports.default = UsersSchema;
+exports.default = PromosSchema;
