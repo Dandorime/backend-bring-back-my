@@ -45,7 +45,6 @@ const authMiddleware: RequestHandler = (req, res, next) => {
   // <auth-type> <auth-data>
   // <auth-type> must be "tma", and <auth-data> is Telegram Mini Apps init data.
   const [authType, authData = ''] = (req.header('authorization') || '').split(' ');
-  console.log(authData);
 
   switch (authType) {
     case 'tma':
@@ -82,25 +81,23 @@ const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
     return next(new Error('Cant display init data as long as it was not found'));
   }
 
-  new UserController().create(initData.user, {date: initData.authDate}).then(e => {console.log('res', e)}).finally(() => {
-
-    console.log('initData', initData);
-  
-    res.json(initData);
+  new UserController().create(initData.user, {date: initData.authDate}).then(e => {
+    console.log('res', e)
+    res.json(e);
   })
 };
 
-/**
- * Middleware which displays the user init data.
- * @param err - handled error.
- * @param _req
- * @param res - Response object.
- */
-const defaultErrorMiddleware: ErrorRequestHandler = (err, _req, res) => {
-  res.status(500).json({
-    error: err.message,
-  });
-};
+// /**
+//  * Middleware which displays the user init data.
+//  * @param err - handled error.
+//  * @param _req
+//  * @param res - Response object.
+//  */
+// const defaultErrorMiddleware: ErrorRequestHandler = (err, _req, res) => {
+//   res.status(500).json({
+//     error: err.message,
+//   });
+// };
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -118,17 +115,13 @@ app.post('/', showInitDataMiddleware);
 // app.post('/', (req, res) => {
 //   log('post ')
 // })
-app.use(defaultErrorMiddleware);
+// app.use(defaultErrorMiddleware);
+// 
 
-app.get('/calendar', (req, res) => {
-  new CalendarController().index().then(data => {
-    log('calendar' ,data)
-    res.json(data)
-  }).catch(e => {
-    res.status(500).json({
-    error: e.message,
-  });
-  })
+app.get('/calendar', async (req, res) => {
+  const result =  await new CalendarController().index()
+  log('calendar' ,result)
+  res.json(result)
 })
 
 
@@ -144,17 +137,17 @@ app.get('/ping', (req: Request, res: Response) => {
 //   res.send('Hi pip')
 // });
 
-app.get('/testModel/:name', (req: Request, res: Response) => {
-  const TestName = new Test({name: req.params.name});
-  const funcTect = async () => await TestName.save()
-  funcTect()
-  const result = async () => await Test.find()
-  result().then(e => { 
-    res.send(e)
-    log(e)
-  })
+// app.get('/testModel/:name', (req: Request, res: Response) => {
+//   const TestName = new Test({name: req.params.name});
+//   const funcTect = async () => await TestName.save()
+//   funcTect()
+//   const result = async () => await Test.find()
+//   result().then(e => { 
+//     res.send(e)
+//     log(e)
+//   })
   
-})
+// })
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
