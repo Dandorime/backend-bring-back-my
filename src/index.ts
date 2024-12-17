@@ -122,6 +122,7 @@ app.use(defaultErrorMiddleware);
 
 app.get('/calendar', (req, res) => {
   new CalendarController().index().then(data => {
+    log('calendar' ,data)
     res.json(data)
   }).catch(e => {
     res.status(500).json({
