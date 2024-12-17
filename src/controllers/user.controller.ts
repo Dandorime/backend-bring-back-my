@@ -7,6 +7,7 @@ import UserPromos from "@/db/models/user_promos.model";
 import Users from "@/db/models/users.model";
 import Visits from "@/db/models/visits.model";
 import { IResUserData, IUsersSchema } from "@/db/schema/users.schema";
+import VisitController from "./visit.controller";
 
 export default class UserController extends Controller<IUsersSchema>{
 
@@ -22,7 +23,8 @@ export default class UserController extends Controller<IUsersSchema>{
             const tikets = await Tickets.findOneAndUpdate({user_id: user.id}, {user_id: user.id}, { new: true, upsert: true })
             const userPromos = await UserPromos.findOneAndUpdate({user_id: user.id}, {user_id: user.id}, { new: true, upsert: true })
             const completedTasks = await CompletedTasks.findOneAndReplace({user_id: user.id}, {user_id: user.id}, { new: true, upsert: true })
-            const visits = await Visits.findOneAndUpdate({user_id: user.id}, {user_id: user.id}, { new: true, upsert: true })
+            const createvisit = await Visits.findOneAndUpdate({user_id: user.id}, {user_id: user.id}, { new: true, upsert: true })
+            const visits = await new VisitController().checkVisit(user.id)
             const result = {
                 user,
                 tikets,

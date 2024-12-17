@@ -9,6 +9,8 @@ import { validate, parse } from '@telegram-apps/init-data-node';
 import UserController from "./controllers/user.controller";
 import CalendarController from "./controllers/caledar.controller";
 import TaskController from "./controllers/task.controller";
+import PromoController from "./controllers/propo.controller";
+import VisitController from "./controllers/visit.controller";
 
 dotenv.config();
 
@@ -83,7 +85,6 @@ const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
   }
 
   new UserController().create(initData.user, {date: initData.authDate}).then(e => {
-    console.log('res', e)
     res.json(e);
   })
 };
@@ -121,24 +122,29 @@ app.post('/', showInitDataMiddleware);
 
 app.get('/calendar', (req, res) => {
   new CalendarController().index().then(data => {
-    log('calendar', data)
     res.json(data)
   })
 })
 
 app.get('/tasks', (req, res) => {
   new TaskController().index().then(data => {
-    log('tasks', data)
     res.json(data)
   })
 })
 
 app.get('/promos', (req, res) => {
-  new TaskController().index().then(data => {
-    log('promos', data)
+  new PromoController().index().then(data => {
     res.json(data)
   })
 })
+
+app.post('/open-box', (req, res) => {
+  log(req.body.user_id)
+  new UserController().visitUser(req.body.user_id).then(data => {
+    log('open-box', data)
+    res.json(data)
+  })
+}) 
 
 
 app.get('/', (req, res) => {
