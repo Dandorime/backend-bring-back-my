@@ -5,6 +5,10 @@ const VisitsSchema = new mongoose.Schema({
     calendar_ids: { 
         type: Array<Number | undefined>,
         default: []
+    },
+    is_open: {
+        type: Boolean,
+        default: false
     }
 })
 
