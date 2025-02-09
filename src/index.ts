@@ -80,6 +80,7 @@ const showInitDataMiddleware: RequestHandler = (_req, res, next) => {
   console.log('showInitDataMiddleware');
   
   const initData = getInitData(res);
+  console.log(initData)
   if (!initData) {
     return next(new Error('Cant display init data as long as it was not found'));
   }
